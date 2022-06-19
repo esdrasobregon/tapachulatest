@@ -7,9 +7,10 @@ package test01;
 import controllers.crudUnidades;
 import entidades.unidades;
 import java.awt.Toolkit;
-import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Date;
 import javax.swing.JOptionPane;
+import javax.swing.ListSelectionModel;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -21,13 +22,24 @@ public class inicio extends javax.swing.JFrame {
     /**
      * Creates new form inicio
      */
+    ArrayList<unidades> listaUn;
+    crudUnidades crud;
+
     public inicio() {
         initComponents();
         Toolkit tk = Toolkit.getDefaultToolkit();
         int xSize = ((int) tk.getScreenSize().getWidth());
         int ySize = ((int) tk.getScreenSize().getHeight());
         setSize(xSize, ySize);
-        addRowToUnidades();
+        crud = new crudUnidades();
+        this.listaUn = crud.getAllUnidades();
+
+        for (int i = 0; i < this.listaUn.size(); i++) {
+            addRowToUnidades(listaUn.get(i));
+        }
+        addListenerToTable();
+        //addRowToUnidades();
+
     }
 
     /**
@@ -255,11 +267,11 @@ public class inicio extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "error");
         }
     }//GEN-LAST:event_btnAgregarActionPerformed
-    private LocalDate getFormDate() {
+    private Date getFormDate() {
         int day = Integer.parseInt(this.txtDia.getText());
         int month = Integer.parseInt(this.txtmes.getText());
         int year = Integer.parseInt(this.txtAnyo.getText());
-        LocalDate date = LocalDate.of(year, month, day);
+        Date date = new Date(year, month, day);
         return date;
     }
 
@@ -275,15 +287,48 @@ public class inicio extends javax.swing.JFrame {
     }
 
     private void addRowToUnidades() {
+        Date d = new Date();
+        ListSelectionModel lisSelectionModel = this.tbUnidades.getSelectionModel();
+        lisSelectionModel.addListSelectionListener((e) -> {
+            if (!lisSelectionModel.isSelectionEmpty()) {
+                int index = lisSelectionModel.getMinSelectionIndex();
+                JOptionPane.showMessageDialog(null, "index: " + index);
+
+            }
+        });
         DefaultTableModel model = (DefaultTableModel) this.tbUnidades.getModel();
         unidades un = new unidades();
         un.setIdbus(1);
         un.setActivo(1);
-        un.setFecha_ingreso(LocalDate.now());
+        un.setFecha_ingreso(d);
         un.setMarca("marca");
         un.setModelo(2);
         un.setTipo(1);
         un.setPlaca("placa");
+        model.addRow(new Object[]{
+            un.getIdbus(),
+            un.getFecha_ingreso(),
+            un.getMarca(),
+            un.getModelo(),
+            un.getPlaca(),
+            un.getActivo(),
+            un.getActivo()
+        });
+    }
+
+    private void addListenerToTable() {
+        ListSelectionModel lisSelectionModel = this.tbUnidades.getSelectionModel();
+        lisSelectionModel.addListSelectionListener((e) -> {
+            if (!lisSelectionModel.isSelectionEmpty()) {
+                int index = lisSelectionModel.getMinSelectionIndex();
+                JOptionPane.showMessageDialog(null, "index: " + index);
+
+            }
+        });
+    }
+
+    private void addRowToUnidades(unidades un) {
+        DefaultTableModel model = (DefaultTableModel) this.tbUnidades.getModel();
         model.addRow(new Object[]{
             un.getIdbus(),
             un.getFecha_ingreso(),

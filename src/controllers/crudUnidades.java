@@ -11,6 +11,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import javax.swing.JOptionPane;
 
 /**
@@ -46,6 +47,45 @@ public class crudUnidades {
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, e);
             return false;
+        }
+    }
+
+ public ArrayList<unidades> getAllUnidades() {
+     ArrayList<unidades> list = new ArrayList<>();
+        
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            Connection con = credentials.getConnector();
+            //here sonoo is database name, root is username and password 
+            PreparedStatement ps
+                    = con.prepareStatement("select "
+                            + "idbus,"
+                            + " activo,"
+                            + " tipo,"
+                            + " fecha_ingreso,"
+                            + " modelo,"
+                            + " placa,"
+                            + "marca"
+                            + " from unidades"
+                    );
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {  
+                unidades un = new unidades();
+                un.setIdbus(rs.getInt(1));
+                un.setActivo(rs.getInt(2));
+                un.setTipo(rs.getInt(2));
+                un.setFecha_ingreso(rs.getDate(4));
+                un.setModelo(rs.getInt(5));
+                un.setPlaca(rs.getString(6));
+                un.setMarca(rs.getString(7));
+                list.add(un);
+                System.out.println(rs.getString(6));
+            }
+            con.close();
+            return list;
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e);
+            return null;
         }
     }
 

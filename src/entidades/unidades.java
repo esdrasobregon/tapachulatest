@@ -5,6 +5,7 @@
 package entidades;
 
 import java.time.LocalDate;
+import java.util.Date;
 
 /**
  *
@@ -14,12 +15,12 @@ public class unidades {
     
     int idbus, modelo, activo, tipo;
     String marca, placa;
-    LocalDate fecha_ingreso;
+    Date fecha_ingreso;
 
     public unidades() {
     }
 
-    public unidades(int idbus, int modelo, int activo, int tipo, String marca, String placa, LocalDate fecha_ingreso) {
+    public unidades(int idbus, int modelo, int activo, int tipo, String marca, String placa, Date fecha_ingreso) {
         this.idbus = idbus;
         this.modelo = modelo;
         this.activo = activo;
@@ -77,11 +78,11 @@ public class unidades {
         this.placa = placa;
     }
 
-    public LocalDate getFecha_ingreso() {
+    public Date getFecha_ingreso() {
         return fecha_ingreso;
     }
 
-    public void setFecha_ingreso(LocalDate fecha_ingreso) {
+    public void setFecha_ingreso(Date fecha_ingreso) {
         this.fecha_ingreso = fecha_ingreso;
     }
     
