@@ -85,7 +85,7 @@ public class login extends JFrame implements ActionListener {
                 if (us.getNombreUsuario() != null) {
                     JOptionPane.showMessageDialog(null, "Bienvenido: " + us.getNombreUsuario());
                     currentUsser = us;
-                    inicio in = new inicio();
+                    formUnidades in = new formUnidades();
 
                     in.setVisible(true);
 

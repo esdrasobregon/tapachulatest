@@ -6,13 +6,8 @@ package test01;
 
 import controllers.crudUnidades;
 import entidades.unidades;
-import java.awt.Toolkit;
-import java.util.ArrayList;
 import java.util.Date;
 import javax.swing.JOptionPane;
-import javax.swing.ListSelectionModel;
-import javax.swing.table.DefaultTableModel;
-
 /**
  *
  * @author esdra
@@ -22,22 +17,19 @@ public class inicio extends javax.swing.JFrame {
     /**
      * Creates new form inicio
      */
-    ArrayList<unidades> listaUn;
     crudUnidades crud;
 
     public inicio() {
         initComponents();
-        Toolkit tk = Toolkit.getDefaultToolkit();
-        int xSize = ((int) tk.getScreenSize().getWidth());
-        int ySize = ((int) tk.getScreenSize().getHeight());
-        setSize(xSize, ySize);
+        
         crud = new crudUnidades();
-        this.listaUn = crud.getAllUnidades();
+        //addRowToUnidades();
 
-        for (int i = 0; i < this.listaUn.size(); i++) {
-            addRowToUnidades(listaUn.get(i));
-        }
-        addListenerToTable();
+    }
+    public inicio(unidades unidade) {
+        initComponents();
+        
+        crud = new crudUnidades();
         //addRowToUnidades();
 
     }
@@ -56,8 +48,6 @@ public class inicio extends javax.swing.JFrame {
         jPanel2 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         txtmes = new javax.swing.JTextField();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        tbUnidades = new javax.swing.JTable();
         jLabel3 = new javax.swing.JLabel();
         txtIdBus = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
@@ -88,7 +78,7 @@ public class inicio extends javax.swing.JFrame {
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 800, Short.MAX_VALUE)
+            .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 310, Short.MAX_VALUE)
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -97,50 +87,9 @@ public class inicio extends javax.swing.JFrame {
                 .addGap(0, 1, Short.MAX_VALUE))
         );
 
-        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 800, 60));
+        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 310, 60));
 
         jLabel2.setText("FECHA DE INGRESO");
-
-        tbUnidades.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-
-            },
-            new String [] {
-                "ID BUS", "FECHA INGRESO", "MARCA", "MODELO", "PLACA", "TIPO", "ACTIVO"
-            }
-        ) {
-            Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
-            };
-            boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, false
-            };
-
-            public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
-            }
-
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
-            }
-        });
-        jScrollPane1.setViewportView(tbUnidades);
-        if (tbUnidades.getColumnModel().getColumnCount() > 0) {
-            tbUnidades.getColumnModel().getColumn(0).setResizable(false);
-            tbUnidades.getColumnModel().getColumn(0).setHeaderValue("ID BUS");
-            tbUnidades.getColumnModel().getColumn(1).setResizable(false);
-            tbUnidades.getColumnModel().getColumn(1).setHeaderValue("FECHA INGRESO");
-            tbUnidades.getColumnModel().getColumn(2).setResizable(false);
-            tbUnidades.getColumnModel().getColumn(2).setHeaderValue("MARCA");
-            tbUnidades.getColumnModel().getColumn(3).setResizable(false);
-            tbUnidades.getColumnModel().getColumn(3).setHeaderValue("MODELO");
-            tbUnidades.getColumnModel().getColumn(4).setResizable(false);
-            tbUnidades.getColumnModel().getColumn(4).setHeaderValue("PLACA");
-            tbUnidades.getColumnModel().getColumn(5).setResizable(false);
-            tbUnidades.getColumnModel().getColumn(5).setHeaderValue("TIPO");
-            tbUnidades.getColumnModel().getColumn(6).setResizable(false);
-            tbUnidades.getColumnModel().getColumn(6).setHeaderValue("ACTIVO");
-        }
 
         jLabel3.setText("ID BUS");
 
@@ -172,60 +121,52 @@ public class inicio extends javax.swing.JFrame {
                 .addGap(20, 20, 20)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(btnAgregar, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addComponent(jLabel8)
-                                .addGap(127, 127, 127)
-                                .addComponent(cmbActivo, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel2)
-                                    .addComponent(jLabel3)
-                                    .addComponent(jLabel4))
-                                .addGap(63, 63, 63)
-                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(txtIdBus, javax.swing.GroupLayout.DEFAULT_SIZE, 133, Short.MAX_VALUE)
-                                    .addComponent(txtMarca)
-                                    .addGroup(jPanel2Layout.createSequentialGroup()
-                                        .addComponent(txtDia, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(txtmes, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addComponent(txtAnyo, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel5)
-                                    .addComponent(jLabel6)
-                                    .addComponent(jLabel7))
-                                .addGap(119, 119, 119)
-                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(txtTipo, javax.swing.GroupLayout.DEFAULT_SIZE, 133, Short.MAX_VALUE)
-                                    .addComponent(txtModelo)
-                                    .addComponent(txtPlaca))))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 30, Short.MAX_VALUE)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 633, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap())
+                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addGroup(jPanel2Layout.createSequentialGroup()
+                            .addComponent(jLabel8)
+                            .addGap(127, 127, 127)
+                            .addComponent(cmbActivo, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGroup(jPanel2Layout.createSequentialGroup()
+                            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(jLabel2)
+                                .addComponent(jLabel3)
+                                .addComponent(jLabel4))
+                            .addGap(63, 63, 63)
+                            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(txtIdBus, javax.swing.GroupLayout.DEFAULT_SIZE, 133, Short.MAX_VALUE)
+                                .addComponent(txtMarca)
+                                .addGroup(jPanel2Layout.createSequentialGroup()
+                                    .addComponent(txtDia, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(txtmes, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                    .addComponent(txtAnyo, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addGroup(jPanel2Layout.createSequentialGroup()
+                            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(jLabel5)
+                                .addComponent(jLabel6)
+                                .addComponent(jLabel7))
+                            .addGap(119, 119, 119)
+                            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(txtTipo, javax.swing.GroupLayout.DEFAULT_SIZE, 133, Short.MAX_VALUE)
+                                .addComponent(txtModelo)
+                                .addComponent(txtPlaca)))))
+                .addContainerGap(39, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGap(35, 35, 35)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGap(35, 35, 35)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel2)
-                            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(txtmes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(txtAnyo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(txtDia, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(9, 9, 9)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel3)
-                            .addComponent(txtIdBus, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(jLabel2)
+                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(txtmes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(txtAnyo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(txtDia, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(9, 9, 9)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel3)
+                    .addComponent(txtIdBus, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(txtMarca, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -248,10 +189,10 @@ public class inicio extends javax.swing.JFrame {
                     .addComponent(cmbActivo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(42, 42, 42)
                 .addComponent(btnAgregar, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(63, Short.MAX_VALUE))
+                .addContainerGap(43, Short.MAX_VALUE))
         );
 
-        getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 80, 990, 460));
+        getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 100, 360, 440));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -263,6 +204,7 @@ public class inicio extends javax.swing.JFrame {
         boolean res = cun.add(getFormUnidades());
         if (res) {
             JOptionPane.showMessageDialog(null, "echo");
+            this.dispose();
         } else {
             JOptionPane.showMessageDialog(null, "error");
         }
@@ -286,60 +228,7 @@ public class inicio extends javax.swing.JFrame {
         return un;
     }
 
-    private void addRowToUnidades() {
-        Date d = new Date();
-        ListSelectionModel lisSelectionModel = this.tbUnidades.getSelectionModel();
-        lisSelectionModel.addListSelectionListener((e) -> {
-            if (!lisSelectionModel.isSelectionEmpty()) {
-                int index = lisSelectionModel.getMinSelectionIndex();
-                JOptionPane.showMessageDialog(null, "index: " + index);
-
-            }
-        });
-        DefaultTableModel model = (DefaultTableModel) this.tbUnidades.getModel();
-        unidades un = new unidades();
-        un.setIdbus(1);
-        un.setActivo(1);
-        un.setFecha_ingreso(d);
-        un.setMarca("marca");
-        un.setModelo(2);
-        un.setTipo(1);
-        un.setPlaca("placa");
-        model.addRow(new Object[]{
-            un.getIdbus(),
-            un.getFecha_ingreso(),
-            un.getMarca(),
-            un.getModelo(),
-            un.getPlaca(),
-            un.getActivo(),
-            un.getActivo()
-        });
-    }
-
-    private void addListenerToTable() {
-        ListSelectionModel lisSelectionModel = this.tbUnidades.getSelectionModel();
-        lisSelectionModel.addListSelectionListener((e) -> {
-            if (!lisSelectionModel.isSelectionEmpty()) {
-                int index = lisSelectionModel.getMinSelectionIndex();
-                JOptionPane.showMessageDialog(null, "index: " + index);
-
-            }
-        });
-    }
-
-    private void addRowToUnidades(unidades un) {
-        DefaultTableModel model = (DefaultTableModel) this.tbUnidades.getModel();
-        model.addRow(new Object[]{
-            un.getIdbus(),
-            un.getFecha_ingreso(),
-            un.getMarca(),
-            un.getModelo(),
-            un.getPlaca(),
-            un.getActivo(),
-            un.getActivo()
-        });
-    }
-
+    
     /**
      * @param args the command line arguments
      */
@@ -388,8 +277,6 @@ public class inicio extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel8;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable tbUnidades;
     private javax.swing.JTextField txtAnyo;
     private javax.swing.JTextField txtDia;
     private javax.swing.JTextField txtIdBus;

@@ -11,6 +11,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.time.LocalDate;
+import java.time.Month;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
 
@@ -22,6 +23,8 @@ public class crudUnidades {
 
     public boolean add(unidades un) {
         boolean us = false;
+        LocalDate d
+                = LocalDate.of(un.getFecha_ingreso().getYear(), un.getFecha_ingreso().getMonth(), un.getFecha_ingreso().getDate());
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
             Connection con = credentials.getConnector();
@@ -34,7 +37,7 @@ public class crudUnidades {
                             + " placa,"
                             + " activo,"
                             + " tipo) values (?,?,?,?,?,?)");
-            ps.setString(1, un.getFecha_ingreso().toString());
+            ps.setString(1, d.toString());
             ps.setString(2, un.getMarca());
             ps.setInt(3, un.getModelo());
             ps.setString(4, un.getPlaca());
@@ -50,9 +53,9 @@ public class crudUnidades {
         }
     }
 
- public ArrayList<unidades> getAllUnidades() {
-     ArrayList<unidades> list = new ArrayList<>();
-        
+    public ArrayList<unidades> getAllUnidades() {
+        ArrayList<unidades> list = new ArrayList<>();
+
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
             Connection con = credentials.getConnector();
@@ -69,7 +72,7 @@ public class crudUnidades {
                             + " from unidades"
                     );
             ResultSet rs = ps.executeQuery();
-            while (rs.next()) {  
+            while (rs.next()) {
                 unidades un = new unidades();
                 un.setIdbus(rs.getInt(1));
                 un.setActivo(rs.getInt(2));
