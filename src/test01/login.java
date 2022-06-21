@@ -83,9 +83,9 @@ public class login extends JFrame implements ActionListener {
                 //usuario us = crud.login(contrasenya, usuario);
                 usuario us = crud.login("12345", "edras");
                 if (us.getNombreUsuario() != null) {
-                    JOptionPane.showMessageDialog(null, "Bienvenido: " + us.getNombreUsuario());
+                    //JOptionPane.showMessageDialog(null, "Bienvenido: " + us.getNombreUsuario());
                     currentUsser = us;
-                    formUnidades in = new formUnidades();
+                    mantUnidades in = new mantUnidades(us);
 
                     in.setVisible(true);
 

@@ -53,6 +53,25 @@ public class crudUnidades {
         }
     }
 
+    public boolean delete(unidades un) {
+        boolean us = false;
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            Connection con = credentials.getConnector();
+            //here sonoo is database name, root is username and password 
+            PreparedStatement ps
+                    = con.prepareStatement("delete from unidades where idbus = ?");
+            ps.setInt(1, un.getIdbus());
+            ps.execute();
+            con.close();
+            us = true;
+            return us;
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e);
+            return false;
+        }
+    }
+
     public ArrayList<unidades> getAllUnidades() {
         ArrayList<unidades> list = new ArrayList<>();
 
@@ -82,7 +101,6 @@ public class crudUnidades {
                 un.setPlaca(rs.getString(6));
                 un.setMarca(rs.getString(7));
                 list.add(un);
-                System.out.println(rs.getString(6));
             }
             con.close();
             return list;
