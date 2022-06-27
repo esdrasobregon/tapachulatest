@@ -4,13 +4,24 @@
  */
 package test01;
 
+import controllers.crudTipoUnidades;
 import controllers.crudUnidades;
+import entidades.tipoUnidades;
 import entidades.unidades;
 import entidades.usuario;
+import java.awt.BorderLayout;
+import java.awt.Color;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import javax.swing.ListSelectionModel;
 import javax.swing.table.DefaultTableModel;
+import org.jfree.chart.ChartFactory;
+import org.jfree.chart.ChartFrame;
+import org.jfree.chart.ChartPanel;
+import org.jfree.chart.JFreeChart;
+import org.jfree.chart.plot.CategoryPlot;
+import org.jfree.chart.plot.PlotOrientation;
+import org.jfree.data.category.DefaultCategoryDataset;
 
 /**
  *
@@ -24,9 +35,12 @@ public class mantUnidades extends javax.swing.JFrame {
     ArrayList<unidades> listaUn;
     crudUnidades crud;
     usuario currentUsser;
+    crudTipoUnidades cruTipo;
+    ArrayList<tipoUnidades> listTipos;
 
     public mantUnidades() {
         initComponents();
+        crudTipoUnidades cruTipo;
         crud = new crudUnidades();
         this.listaUn = crud.getAllUnidades();
 
@@ -34,19 +48,48 @@ public class mantUnidades extends javax.swing.JFrame {
             addRowToUnidades(listaUn.get(i));
         }
         addListenerToTable();
+        this.listTipos = this.cruTipo.getAllTipoUnidades();
+        getGrapinc();
+    }
+
+    private void getGrapinc() {
+        //https://stackoverflow.com/questions/7945565/add-a-jfreechart-in-to-jpanel
+        DefaultCategoryDataset dataset = new DefaultCategoryDataset();
+        for (tipoUnidades object : this.listTipos) {
+            int count = 0;
+            for (int i = 0; i < this.listaUn.size(); i++) {
+                if (this.listaUn.get(i).getTipo() == object.getIdtipo()) {
+                    count += 1;
+                }
+            }
+            dataset.setValue(count, object.getDescripcion(), object.getIdtipo() + "");
+        }
+        JFreeChart chart = ChartFactory.createBarChart("Tipo unidades", "Tipos", "Cantidad", dataset, PlotOrientation.VERTICAL, false, true, false);
+        CategoryPlot plot = chart.getCategoryPlot();
+        plot.setRangeGridlinePaint(Color.black);
+        this.chartPanel.setBackground(new Color(255, 102, 51));
+        //this.chartPanel.setBounds(300, 350, 300, 300);
+        this.chartPanel.setLayout(new java.awt.BorderLayout());
+        ChartPanel chartp = new ChartPanel(chart);
+        this.chartPanel.add(chartp);
+        this.chartPanel.validate();
+
     }
 
     public mantUnidades(usuario us) {
         initComponents();
         this.currentUsser = us;
+        this.cruTipo = new crudTipoUnidades();
         System.out.println(us.getNombreUsuario());
         crud = new crudUnidades();
+        this.listTipos = this.cruTipo.getAllTipoUnidades();
         this.listaUn = crud.getAllUnidades();
 
         for (int i = 0; i < this.listaUn.size(); i++) {
             addRowToUnidades(listaUn.get(i));
         }
         addListenerToTable();
+        getGrapinc();
     }
 
     /**
@@ -64,8 +107,11 @@ public class mantUnidades extends javax.swing.JFrame {
         btnSalir = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         btnAgregar = new javax.swing.JButton();
+        btnVerBuses = new javax.swing.JButton();
+        chartPanel = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setBackground(new java.awt.Color(51, 102, 255));
 
         tbUnidades.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -111,41 +157,64 @@ public class mantUnidades extends javax.swing.JFrame {
             }
         });
 
+        btnVerBuses.setText("ver");
+        btnVerBuses.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnVerBusesActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 800, Short.MAX_VALUE)
+                .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+            .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(17, 17, 17)
                 .addComponent(btnAgregar, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(167, 167, 167)
+                .addComponent(btnVerBuses)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 223, Short.MAX_VALUE)
                 .addComponent(btnSalir, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(29, 29, 29))
             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanel1Layout.createSequentialGroup()
                     .addGap(16, 16, 16)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 633, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(17, Short.MAX_VALUE)))
+                    .addContainerGap(105, Short.MAX_VALUE)))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 394, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 187, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnSalir, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnAgregar, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(btnAgregar, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnVerBuses))
                 .addGap(19, 19, 19))
             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanel1Layout.createSequentialGroup()
                     .addGap(69, 69, 69)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 382, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(70, Short.MAX_VALUE)))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addContainerGap(106, Short.MAX_VALUE)))
+        );
+
+        chartPanel.setBackground(new java.awt.Color(0, 51, 255));
+
+        javax.swing.GroupLayout chartPanelLayout = new javax.swing.GroupLayout(chartPanel);
+        chartPanel.setLayout(chartPanelLayout);
+        chartPanelLayout.setHorizontalGroup(
+            chartPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 809, Short.MAX_VALUE)
+        );
+        chartPanelLayout.setVerticalGroup(
+            chartPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 278, Short.MAX_VALUE)
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -154,14 +223,18 @@ public class mantUnidades extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(chartPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(15, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(28, 28, 28)
+                .addComponent(chartPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -179,6 +252,12 @@ public class mantUnidades extends javax.swing.JFrame {
         formUnidades in = new formUnidades();
         in.setVisible(true);
     }//GEN-LAST:event_btnAgregarActionPerformed
+
+    private void btnVerBusesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVerBusesActionPerformed
+        // TODO add your handling code here:
+
+        getGrapinc();
+    }//GEN-LAST:event_btnVerBusesActionPerformed
 
     /**
      * @param args the command line arguments
@@ -230,9 +309,9 @@ public class mantUnidades extends javax.swing.JFrame {
                     case 0:
                         System.out.print(response);
                         boolean res = this.crud.delete(un);
-                        if(res){
+                        if (res) {
                             JOptionPane.showMessageDialog(null, "echo");
-                        }else{
+                        } else {
                             JOptionPane.showMessageDialog(null, "error");
                         }
                         break;
@@ -243,10 +322,9 @@ public class mantUnidades extends javax.swing.JFrame {
                     default:
                         System.out.print(response);
                 }
-                
+
                 //formUnidades formUn = new formUnidades(this.currentUsser, un);
                 //formUn.setVisible(true);
-
             }
         });
     }
@@ -259,7 +337,7 @@ public class mantUnidades extends javax.swing.JFrame {
             un.getMarca(),
             un.getModelo(),
             un.getPlaca(),
-            un.getActivo(),
+            un.getTipo(),
             un.getActivo()
         });
     }
@@ -267,6 +345,8 @@ public class mantUnidades extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAgregar;
     private javax.swing.JButton btnSalir;
+    private javax.swing.JButton btnVerBuses;
+    private javax.swing.JPanel chartPanel;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;

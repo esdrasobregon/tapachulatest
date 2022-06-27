@@ -8,10 +8,10 @@ import data.credentials;
 import entidades.unidades;
 import entidades.usuario;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.time.LocalDate;
-import java.time.Month;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
 
@@ -23,9 +23,7 @@ public class crudUnidades {
 
     public boolean add(unidades un) {
         boolean us = false;
-        LocalDate d
-                = LocalDate.of(un.getFecha_ingreso().getYear(), un.getFecha_ingreso().getMonth(), un.getFecha_ingreso().getDate());
-        try {
+         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
             Connection con = credentials.getConnector();
             //here sonoo is database name, root is username and password 
@@ -37,7 +35,7 @@ public class crudUnidades {
                             + " placa,"
                             + " activo,"
                             + " tipo) values (?,?,?,?,?,?)");
-            ps.setString(1, d.toString());
+            ps.setDate(1, new Date(un.getFecha_ingreso().getTime()));
             ps.setString(2, un.getMarca());
             ps.setInt(3, un.getModelo());
             ps.setString(4, un.getPlaca());
@@ -87,7 +85,7 @@ public class crudUnidades {
                             + " fecha_ingreso,"
                             + " modelo,"
                             + " placa,"
-                            + "marca"
+                            + " marca"
                             + " from unidades"
                     );
             ResultSet rs = ps.executeQuery();
@@ -95,7 +93,7 @@ public class crudUnidades {
                 unidades un = new unidades();
                 un.setIdbus(rs.getInt(1));
                 un.setActivo(rs.getInt(2));
-                un.setTipo(rs.getInt(2));
+                un.setTipo(rs.getInt(3));
                 un.setFecha_ingreso(rs.getDate(4));
                 un.setModelo(rs.getInt(5));
                 un.setPlaca(rs.getString(6));
