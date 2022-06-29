@@ -4,6 +4,8 @@
  */
 package controllers;
 
+import com.mysql.cj.jdbc.CallableStatement;
+import com.mysql.cj.protocol.Resultset;
 import data.credentials;
 import entidades.unidades;
 import entidades.usuario;
@@ -13,6 +15,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Locale;
 import javax.swing.JOptionPane;
 
 /**
@@ -23,7 +26,7 @@ public class crudUnidades {
 
     public boolean add(unidades un) {
         boolean us = false;
-         try {
+        try {
             Class.forName("com.mysql.cj.jdbc.Driver");
             Connection con = credentials.getConnector();
             //here sonoo is database name, root is username and password 
@@ -105,6 +108,30 @@ public class crudUnidades {
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, e);
             return null;
+        }
+    }
+
+    public int getActivos() {
+        int us = 0;
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            Connection con = credentials.getConnector();
+            //here sonoo is database name, root is username and password 
+            PreparedStatement ps
+                    = con.prepareStatement("select busesactivos() as activos"
+                    );
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                us = rs.getInt(1);
+                
+            }
+            JOptionPane.showMessageDialog(null, "activos "+us);
+            con.close();
+            return us;
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e);
+            System.out.println(e.getMessage());
+            return 0;
         }
     }
 

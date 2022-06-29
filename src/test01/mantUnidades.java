@@ -43,6 +43,7 @@ public class mantUnidades extends javax.swing.JFrame {
         crudTipoUnidades cruTipo;
         crud = new crudUnidades();
         this.listaUn = crud.getAllUnidades();
+        int act = crud.getActivos();
 
         for (int i = 0; i < this.listaUn.size(); i++) {
             addRowToUnidades(listaUn.get(i));
@@ -84,6 +85,8 @@ public class mantUnidades extends javax.swing.JFrame {
         crud = new crudUnidades();
         this.listTipos = this.cruTipo.getAllTipoUnidades();
         this.listaUn = crud.getAllUnidades();
+        this.listaUn = crud.getAllUnidades();
+        int act = crud.getActivos();
 
         for (int i = 0; i < this.listaUn.size(); i++) {
             addRowToUnidades(listaUn.get(i));
