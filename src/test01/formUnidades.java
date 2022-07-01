@@ -9,9 +9,12 @@ import controllers.crudUnidades;
 import entidades.tipoUnidades;
 import entidades.unidades;
 import entidades.usuario;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.Date;
 import javax.swing.JOptionPane;
+import javax.swing.JTextField;
 
 /**
  *
@@ -33,10 +36,27 @@ public class formUnidades extends javax.swing.JFrame {
 
         crud = new crudUnidades();
         this.cruTipo = new crudTipoUnidades();
-        this.listTipos  = this.cruTipo.getAllTipoUnidades();
+        this.listTipos = this.cruTipo.getAllTipoUnidades();
         addTiposCmbTipos();
-
+        //adding a listener + no numbers
+        justNumbers(this.txtModelo, 4);
         //addRowToUnidades();
+    }
+
+    private void justNumbers(JTextField txt, int maxLength) {
+        txt.addKeyListener(new KeyAdapter() {
+            public void keyTyped(KeyEvent e) {
+                char c = e.getKeyChar();
+                if (((c < '0') || (c > '9')) && (c != KeyEvent.VK_BACK_SPACE)) {
+                    e.consume();  // if it's not a number, ignore the event
+                }
+                if (txt.getText().length() >= maxLength) // limit to 3 characters
+                {
+                    e.consume();
+                }
+            }
+        });
+
     }
 
     public formUnidades(usuario us, unidades un) {
@@ -237,7 +257,7 @@ public class formUnidades extends javax.swing.JFrame {
         int year = this.callFecha.getDate().getYear();
         //Date date = new Date(year, month, day);
         Date date = new Date(this.callFecha.getDate().getTime());
-        System.out.println("date: "+date.toString());
+        System.out.println("date: " + date.toString());
         return date;
     }
 
@@ -249,7 +269,7 @@ public class formUnidades extends javax.swing.JFrame {
         un.setModelo(Integer.parseInt(this.txtModelo.getText()));
         un.setPlaca(this.txtPlaca.getText());
         un.setTipo(this.listTipos.get(this.cmbTipo.getSelectedIndex()).getIdtipo());
-        
+
         return un;
     }
 
